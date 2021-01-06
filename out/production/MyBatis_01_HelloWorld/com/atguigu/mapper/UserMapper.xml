@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mapper:映射
+namespace:（命名空间）映射到与之对应的接口（java interface），指定接口的全类名
+xml配置文件，要跟映射的接口，同名且在同一个包下
+-->
+<mapper namespace="com.atguigu.mapper.UserMapper">
+
+    <!--
+    查询 sql中的全部数据
+    -->
+    <select id="selectUserAll" resultType="com.atguigu.pojo.User">
+        select `id`,`last_name` lastName,`sex` from t_user
+    </select>
+
+    <!--
+    通过用户 id 查询一条用户信息
+    （1）id 与要映射的 UserMapper 接口中的方法名，必须一致
+    （2）resultType 是方法的返回值类型（要返回类型的路径全类名）
+    （3）parameterType 是传递的参数的数据类型（是Java提供的）
+    （4）#{id}：表示从传递过来的参数中取出id值
+    -->
+    <select id="selectUserById" resultType="com.atguigu.pojo.User" parameterType="Integer">
+        select id,last_name as lastName,sex from t_user where id= #{id}
+    </select>
+
+    <!--
+    通过用户 id 修改一条用户信息
+    （1）id 与要映射的 UserMapper 接口中的方法名，必须一致
+    （2）没有返回值类型 resultType
+    （3）parameterType 是传递的参数的数据类型（自己写的）
+    （4）#{lastName}, #{sex}  #{id} 必须与 User中的field（属性） 一致
+    -->
+    <update id="updateUserById" parameterType="com.atguigu.pojo.User">
+        update t_user set last_name = #{lastName},sex = #{sex} where id = #{id}
+    </update>
+
+    <!--
+    通过用户 id 删除一条用户信息
+    -->
+    <delete id="deleteUserById" parameterType="integer">
+        delete from t_user where id = #{id}
+    </delete>
+
+    <!--
+    通过用户 id 删除一条用户信息
+    -->
+    <insert id="insertUser" parameterType="com.atguigu.pojo.User">
+        insert into t_user (`last_name`,`sex`) values (#{lastName},#{sex})
+    </insert>
+
+</mapper>
+
+
+
+
